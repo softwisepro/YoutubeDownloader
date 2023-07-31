@@ -27,6 +27,7 @@ const Hero = ({ setResults, results, setIsLoading }) => {
                 .catch(error => {
                     setIsLoading(false)
                     setVideoError('Try again, Enter a valid YouTube video Link')
+                    setYoutubeURL('')
                     setTimeout(() => {
                         setVideoError('')
                     }, 10000);
