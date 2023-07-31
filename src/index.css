@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@keyframes bounce {
+    from {
+        height:  0px;
+        visibility:  hidden;
+    }
+    to {
+        height:  auto;
+        visibility:  visible;
+    }
+}
+.animated {
+    animation: bounce 2s ;
+}
