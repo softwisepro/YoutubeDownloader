@@ -19,19 +19,19 @@ const NavigationLinks = ({ to, className = '', label }) => {
 
 const Navbar = () => {
     return (
-        <div className='w-full absolute top-0 mt-10 h-auto py-5 px-5 md:px-12 lg:px-32 flex justify-between items-center bg-transparent'>
+        <div className='absolute top-0 z-50 flex items-center justify-between w-full h-auto px-5 py-5 mt-10 bg-transparent md:px-12 lg:px-32'>
             <div>
-                <h1 className='text-xl text-white font-semibold font-sans tracking-wide hidden md:block'>WiseDownloader Pro</h1>
-                <h1 className='text-xl text-white font-semibold font-sans tracking-wide block md:hidden'>WDPro</h1>
+                <h1 className='hidden font-sans text-xl font-semibold tracking-wide text-white md:block'>WiseDownloader Pro</h1>
+                <h1 className='block font-sans text-xl font-semibold tracking-wide text-white md:hidden'>WDPro</h1>
             </div>
-            <div className='justify-center items-center gap-5 hidden md:flex'>
+            {/* <div className='items-center justify-center hidden gap-5 md:flex'>
                 <NavigationLinks to={'/'} label={'Home'} />
                 <NavigationLinks to={'/language'} label={'Languages'} />
                 <NavigationLinks to={'/about'} label={'About'} />
-            </div>
+            </div> */}
             <div>
                 <button
-                    className='py-3 md:py-4 px-4 md:px-8 hover:bg-indigo-600 tracking-wider transition-colors ease-in-out duration-100 text-white font-medium text-sm bg-gradient-to-r shadow-lg shadow-black/20 from-indigo-100 to-indigo-400 rounded-lg md:rounded-2xl'
+                    className='px-4 py-3 text-sm font-medium tracking-wider text-white transition-colors duration-100 ease-in-out rounded-lg shadow-lg md:py-4 md:px-8 hover:bg-indigo-600 bg-gradient-to-r shadow-black/20 from-indigo-100 to-indigo-400 md:rounded-2xl'
                 >
                     Learn more
                 </button>
