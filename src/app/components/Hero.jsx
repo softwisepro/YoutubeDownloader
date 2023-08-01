@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 
-const Hero = ({ setResults, results, setIsLoading }) => {
+const Hero = ({ setResults, results, setIsLoading, setHistory }) => {
 
     const [youtubeURL, setYoutubeURL] = useState('');
     const [videoError, setVideoError] = useState('')
@@ -22,6 +22,7 @@ const Hero = ({ setResults, results, setIsLoading }) => {
             })
                 .then(response => {
                     setResults(response.data.data)
+                    localStorage.setItem('WDP', `${youtubeURL}`)
                     setIsLoading(false)
                 })
                 .catch(error => {
@@ -34,6 +35,31 @@ const Hero = ({ setResults, results, setIsLoading }) => {
                 });
         }
     }
+
+
+    useEffect(() => {
+        const url = localStorage.getItem('WDP');
+        if (url) {
+            (async () => {
+                await axios.get('https://you-tube-downloader-api.vercel.app/video', {
+                    params: {
+                        link: `${url}`,
+                    }
+                })
+                    .then(response => {
+                        setHistory(response.data.data)
+                        setIsLoading(false)
+                    })
+                    .catch(error => {
+                        setIsLoading(false)
+                        setVideoError('Try again, Enter a valid YouTube video Link')
+                    });
+            })();
+        } else {
+            console.log('nothing')
+        }
+    }, [])
+
 
     return (
         <div className='flex flex-col items-center justify-center w-full h-full px-32 py-20 gap-y-12'>

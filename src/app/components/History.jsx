@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { RiArrowDropDownLine, RiArrowDropUpLine } from 'react-icons/ri'
+import { RiArrowDropUpLine, RiArrowDropDownLine } from 'react-icons/ri'
 
-const Results = ({ results, isLoading }) => {
+const History = ({ history }) => {
 
     const [dropDown, setDropDown] = useState(false);
+    const [errorHistory, setErrorHistory] = useState(false)
 
     const handleDownload = (videoUrl) => {
         const link = document.createElement('a');
@@ -15,44 +16,49 @@ const Results = ({ results, isLoading }) => {
         document.body.removeChild(link);
     };
 
+    useEffect(() => {
+        const url = localStorage.getItem('WDP')
+        if (!url) {
+            setErrorHistory(true)
+        } else {
+            setErrorHistory(false)
+        }
+    }, []);
 
-    if (isLoading) {
-        return (
-            <div className='flex items-center justify-center w-full h-full'>
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-repeat animate-spin" viewBox="0 0 16 16">
-                    <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z" />
-                    <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z" />
-                </svg>
+    if (errorHistory) return null;
+
+
+    if (!history) return (
+        <div className='w-full h-full px-32 my-10'>
+            <div className='relative flex items-center justify-center w-full py-5'>
+                <h5
+                    className='z-20 px-4 text-xl font-bold tracking-wider bg-white'
+                >View Your Last Download history</h5>
+                <div className='absolute w-full h-1 bg-gray-300' />
             </div>
-        )
-    }
-
-    if (!results) {
-        return (
-            <div className='w-full h-full px-32'>
-                <div className='flex items-center justify-center'>
-                    <p>Try to paste a link of a video you want to download from youtube, then click the download button</p>
-                </div>
+            <div className='flex items-center justify-center'>
+                <div className='w-[320px] h-[182px] flex-none border bg-gray-500 animate-pulse' />
+                <div className='w-full min-h-[180px] border border-l-0 p-5 flex flex-col gap-2 bg-gray-200 animate-pulse'></div>
             </div>
-
-        )
-    }
+        </div>
+    )
 
     return (
-        <div className='w-full h-full px-32'>
-            <div className='flex items-center justify-center w-full py-2'>
+        <div className='w-full h-full px-32 my-10'>
+            <div className='relative flex items-center justify-center w-full py-5'>
                 <h5
-                    className='text-sm tracking-wider font-ligh'
-                >Your Video is ready, feel free to choose the Quality then Download the video</h5>
+                    className='z-20 px-4 text-xl font-bold tracking-wider bg-white'
+                >View Your Last Download history</h5>
+                <div className='absolute w-full h-1 bg-gray-300' />
             </div>
             <div className='flex items-center justify-center'>
                 <div className='w-[320px] h-[182px] flex-none border'>
-                    {results?.featured_thumbnail === null ? (
+                    {history?.featured_thumbnail === null ? (
                         <div className='w-full h-full bg-gray-600 animate-pulse'></div>
                     ) : (
                         <img
-                            src={`${results?.featured_thumbnail}`}
-                            alt={`${results?.title}`}
+                            src={`${history?.featured_thumbnail}`}
+                            alt={`${history?.title}`}
                             className='object-cover w-full h-fill '
                         />
                     )}
@@ -61,24 +67,24 @@ const Results = ({ results, isLoading }) => {
                 <div className='w-full min-h-[180px] border border-l-0 p-5 flex flex-col gap-2'>
                     <h4
                         className='text-sm font-light'
-                    >{results?.title}</h4>
+                    >{history?.title}</h4>
 
                     <div className='flex items-center justify-start gap-5'>
-                        <span className='text-sm font-extralight'>{results?.views} views</span>
-                        <span className='text-sm font-extralight'>{results?.duration}</span>
+                        <span className='text-sm font-extralight'>{history?.views} views</span>
+                        <span className='text-sm font-extralight'>{history?.duration}</span>
                     </div>
 
                     <div className='relative flex items-center justify-center w-full max-mt-5'>
                         <div className='flex items-center justify-between w-full gap-2 p-1 bg-indigo-100'>
                             <div>
-                                {results && results?.qualities.slice(0, 1).map((quality) => (
+                                {history && history?.qualities.slice(0, 1).map((quality) => (
                                     <button key={quality?.url} onClick={() => handleDownload(quality?.url)} className='px-4 py-2 font-semibold text-gray-700'>
                                         Download
                                     </button>
                                 ))}
                             </div>
                             <div className='flex'>
-                                {results && results?.qualities.slice(0, 1).map((quality) => (
+                                {history && history?.qualities.slice(0, 1).map((quality) => (
                                     <button
                                         key={quality?.url}
                                         className='flex-none px-4 py-2 font-semibold text-gray-700 bg-white'
@@ -100,7 +106,7 @@ const Results = ({ results, isLoading }) => {
                                 <div className='absolute translate-y-10 animated'>
                                     {dropDown && (
                                         <div className='z-10 '>
-                                            {results && results?.qualities.slice(1,).map((quality) => (
+                                            {history && history?.qualities.slice(1,).map((quality) => (
                                                 <button
                                                     key={quality?.url}
                                                     onClick={() => handleDownload(quality?.url)}
@@ -125,4 +131,4 @@ const Results = ({ results, isLoading }) => {
     )
 }
 
-export default Results
+export default History
